@@ -1,5 +1,5 @@
 -- 🔑 Key System
-local KEY = "Bucket123" -- change this
+local KEY = "SubToBucket" -- change this
 
 local Rayfield = loadstring(game:HttpGet("https://sirius.menu/rayfield"))()
 
