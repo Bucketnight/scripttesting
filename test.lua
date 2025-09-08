@@ -36,7 +36,6 @@ KeyTab:CreateInput({
 
             -- Tabs
             local MainTab = Window:CreateTab("Main", 4483362458)
-            local BuildTab = Window:CreateTab("Building", 4483362458)
 
             ------------------------------------------------
             -- WalkSpeed
@@ -60,6 +59,21 @@ KeyTab:CreateInput({
                 Callback = function(Value)
                     local hum = game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild("Humanoid")
                     if hum then hum.JumpPower = Value end
+                end,
+            })
+
+            ------------------------------------------------
+            -- Set Health (Slider 1–10000)
+            MainTab:CreateSlider({
+                Name = "Set Health",
+                Range = {1, 10000},
+                Increment = 1,
+                CurrentValue = 100,
+                Callback = function(Value)
+                    local char = game.Players.LocalPlayer.Character
+                    if char and char:FindFirstChild("Humanoid") then
+                        char.Humanoid.Health = Value
+                    end
                 end,
             })
 
@@ -160,75 +174,6 @@ KeyTab:CreateInput({
                     else
                         if connection then connection:Disconnect() end
                     end
-                end,
-            })
-
-            ------------------------------------------------
-            -- Simple Building Tool
-            BuildTab:CreateButton({
-                Name = "Give Simple Building Tool",
-                Callback = function()
-                    local player = game.Players.LocalPlayer
-                    local backpack = player:WaitForChild("Backpack")
-
-                    -- Tool
-                    local tool = Instance.new("Tool")
-                    tool.Name = "BuildingTool"
-                    tool.RequiresHandle = false
-                    tool.Parent = backpack
-
-                    -- LocalScript inside Tool
-                    local scriptSource = [[
-local Players = game:GetService("Players")
-local player = Players.LocalPlayer
-local mouse = player:GetMouse()
-
-local tool = script.Parent
-local selectedPart = nil
-local moveIncrement = 1
-local rotateIncrement = 15
-
-tool.Activated:Connect(function()
-    if mouse.Target and mouse.Target:IsA("Part") then
-        selectedPart = mouse.Target
-        print("Selected:", selectedPart.Name)
-    end
-end)
-
--- Move with keys
-mouse.KeyDown:Connect(function(key)
-    if not selectedPart then return end
-
-    if key == "w" then
-        selectedPart.Position += Vector3.new(0, 0, -moveIncrement)
-    elseif key == "s" then
-        selectedPart.Position += Vector3.new(0, 0, moveIncrement)
-    elseif key == "a" then
-        selectedPart.Position += Vector3.new(-moveIncrement, 0, 0)
-    elseif key == "d" then
-        selectedPart.Position += Vector3.new(moveIncrement, 0, 0)
-    elseif key == "q" then
-        selectedPart.Position += Vector3.new(0, moveIncrement, 0)
-    elseif key == "e" then
-        selectedPart.Position += Vector3.new(0, -moveIncrement, 0)
-    elseif key == "r" then
-        selectedPart.Orientation += Vector3.new(0, rotateIncrement, 0)
-    elseif key == "f" then
-        selectedPart.Orientation += Vector3.new(0, -rotateIncrement, 0)
-    end
-end)
-                    ]]
-
-                    local localscript = Instance.new("LocalScript")
-                    localscript.Source = scriptSource
-                    localscript.Parent = tool
-
-                    Rayfield:Notify({
-                        Title = "Building Tool Granted",
-                        Content = "Use W/A/S/D/Q/E to move, R/F to rotate.",
-                        Duration = 7,
-                        Image = 4483362458,
-                    })
                 end,
             })
         else
