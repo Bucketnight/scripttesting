@@ -13,7 +13,7 @@ local LocalPlayer = Players.LocalPlayer
 local PlayerGui = LocalPlayer:WaitForChild("PlayerGui")
 
 -- Configuration
-local ADMIN_NAME = "YourUsernameHere"  -- Change to your Roblox username
+local ADMIN_NAME = "Bucketbee582"  -- Change to your Roblox username
 local getgenv = getgenv or setmetatable({}, {__index = function() return function() end end})  -- Secure mode fallback
 
 -- Admin Check
